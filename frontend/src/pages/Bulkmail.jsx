@@ -87,7 +87,7 @@ const Bulkmail = () => {
                 <p onClick={clickHistory} className='underline px-4 py-2 rounded-md hover:cursor-pointer hover:bg-blue-900 '>History</p>
             </header>
 
-            <div className="main-box flex flex-col items-center gap-2 border border-black rounded-2xl  w-[40%] absolute top-90 left-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white drop-shadow-xl/50">
+            <div className="main-box flex flex-col items-center gap-2 border border-black rounded-2xl  w-[40%] mb-10 absolute top-100 left-1/2 transform -translate-x-1/2 -translate-y-1/2 overflow-hidden bg-white drop-shadow-xl/50">
                 <img src={image} className='w-[90%] m-2 mt-3 rounded-lg' alt="mail image" />
                 <div className="input-boxes  flex flex-col items-center gap-2 p-2 mt-2"> <textarea value={msg} onChange={handleMsg} className='border border-black p-4 rounded-md w-full' placeholder='enter your message'></textarea>
                     <input onChange={handleFile} className='border border-black rounded-md p-2 w-full' type="file" id='inputfile' />
