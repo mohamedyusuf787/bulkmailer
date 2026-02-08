@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const nodemon = require('nodemon');
 const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
 
@@ -117,6 +116,6 @@ app.get("/history", async(req, res) => {
 })
  
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('Server is running on port 3000');
 })
