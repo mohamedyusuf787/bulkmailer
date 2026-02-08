@@ -1,6 +1,6 @@
-import Bulkmail from './Bulkmail.jsx'
-import Login from './Login.jsx'
-import History from './History.jsx'
+import Bulkmail from './pages/Bulkmail.jsx'
+import Login from './pages/Login.jsx'
+import History from './pages/History.jsx'
 import { Routes, Route } from 'react-router-dom'
 const App = () => {
   return (

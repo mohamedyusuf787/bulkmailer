@@ -1,5 +1,5 @@
 import React from 'react'
-import './index.css'
+import '../index.css'
 import axios from 'axios'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -26,7 +26,7 @@ const History = () => {
       <header className='bg-blue-600 flex justify-between items-center px-4 w-full text-left py-4 text-white border-b-3 border-white drop-shadow-xl/20'>
         <div>
           <h1 className='text-2xl font-bold '>Your Email History...📧</h1>
-          <p>your sent emails will appear here</p>
+          <p className='text-sm'>your sent emails will appear here</p>
         </div>
         <p onClick={handleBack} className='underline px-4 py-2 rounded-md hover:cursor-pointer hover:bg-blue-900 '>Back </p>
       </header>
