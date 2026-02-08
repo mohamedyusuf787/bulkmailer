@@ -104,16 +104,16 @@ app.post("/sentmail", async (req, res) => {
   }
 })
 
-app.get("/history", async(req, res) => {
-  try{
-    const data=(await History.find()).sort({sentAt:-1})
-    res.status(200).json(data)
-  }
-  catch(err){
+app.get("/history", async (req, res) => {
+  try {
+    const data = await History.find().sort({ sentAt: -1 });
+    res.status(200).json(data);
+  } catch (err) {
     console.log("Error fetching history:", err);
     res.status(500).send("Failed to fetch history");
   }
-})
+});
+
  
 
 app.listen(process.env.PORT || 3000, () => {
