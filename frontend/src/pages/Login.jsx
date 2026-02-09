@@ -32,7 +32,7 @@ const Login = () => {
                 <h1 className='text-2xl font-bold'>Login Page</h1>
             </header>
 
-            <div className="card flex flex-col gap-2 p-4 items-center justify-center border border-black rounded-2xl w-[35%] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white drop-shadow-xl/50">
+            <div className="main-box flex flex-col gap-2 p-4 items-center justify-center border border-black rounded-2xl w-[35%] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white drop-shadow-xl/50">
                 <h2 className='text-lg font-semibold text-center'>Please enter your credentials</h2>
                 <input value={crendential} onChange={handleCrendential} className='border border-black rounded-md px-2 py-1' type="text" placeholder="Username" />
                 <input value={password} onChange={handlePassword} className='border border-black rounded-md px-2 py-1' type="password" placeholder="Password" />
