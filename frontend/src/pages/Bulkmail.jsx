@@ -53,7 +53,7 @@ const Bulkmail = () => {
         }
 
 
-        axios.post("http://localhost:3000/sentmail",
+        axios.post("https://bulkmailer-1-kwps.onrender.com/sentmail",
             {
                 message: msg,
                 emails: emails,
