@@ -10,11 +10,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => {
-  console.log("Connected with mongodb");
-}).catch((err) => {
-  console.log("Error connecting to mongodb:", err);
-})
+  .then(() => {
+    console.log("Connected with mongodb");
+  }).catch((err) => {
+    console.log("Error connecting to mongodb:", err);
+  })
 
 // create schema for history collection
 const historySchema = new mongoose.Schema({
@@ -58,7 +58,10 @@ app.post("/sentmail", async (req, res) => {
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
-      auth: { user, pass },
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD
+      }
     });
 
     await transporter.verify();
@@ -115,16 +118,16 @@ app.post("/sentmail", async (req, res) => {
       });
     }
 
-  } 
+  }
   catch (error) {
-  console.error("FULL ERROR:", error);
-  console.error("MESSAGE:", error.message);
-  console.error("STACK:", error.stack);
+    console.error("FULL ERROR:", error);
+    console.error("MESSAGE:", error.message);
+    console.error("STACK:", error.stack);
 
-  return res.status(500).json({
-    message: error.message
-  });
-}
+    return res.status(500).json({
+      message: error.message
+    });
+  }
 });
 
 app.get("/history", async (req, res) => {
@@ -137,10 +140,10 @@ app.get("/history", async (req, res) => {
   }
 });
 
- 
+
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 })
 
