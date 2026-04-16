@@ -33,8 +33,10 @@ const Bulkmail = () => {
             const sheet = workbook.Sheets[sheetName];
 
             const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-            setEmails(jsonData);
-            console.log("Excel data:", jsonData);
+            // Extract emails from first column, skip header if present
+            const emailList = jsonData.slice(1).map(row => row[0]).filter(email => email);
+            setEmails(emailList);
+            console.log("Extracted emails:", emailList);
         };
 
         reader.readAsBinaryString(file);

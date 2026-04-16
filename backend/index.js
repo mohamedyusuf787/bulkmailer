@@ -34,6 +34,11 @@ const crendential = mongoose.model("crendential", {}, "bulkmail")
 
 app.post("/sentmail", async (req, res) => {
   const { message, emails } = req.body;
+  
+  if (!Array.isArray(emails) || emails.length === 0) {
+    return res.status(400).send("Invalid email list");
+  }
+  
   let successCount = 0;
   let failedCount = 0;
   const cleanEmails = emails.map(e =>
@@ -51,26 +56,23 @@ app.post("/sentmail", async (req, res) => {
       service: "gmail",
       auth: { user, pass },
     });
-    if (!Array.isArray(emails) || emails.length === 0) {
-      return res.status(400).send("Invalid email list");
-    }
 
 
     for (let i = 0; i < emails.length; i++) {
       try {
         await transporter.sendMail({
           from: user,
-          to: emails[i],
+          to: cleanEmails[i],
           subject: "first mail from yusuf",
           text: message,
         });
 
         successCount++;
-        console.log("email sent to:", emails[i]);
+        console.log("email sent to:", cleanEmails[i]);
 
       } catch (err) {
         failedCount++;
-        console.log("Error sending to:", emails[i], err.message);
+        console.log("Error sending to:", cleanEmails[i], err.message);
       }
     }
 
