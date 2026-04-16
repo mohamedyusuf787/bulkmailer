@@ -34,20 +34,24 @@ const crendential = mongoose.model("crendential", {}, "bulkmail")
 
 app.post("/sentmail", async (req, res) => {
   const { message, emails } = req.body;
-  
+
   if (!Array.isArray(emails) || emails.length === 0) {
     return res.status(400).send("Invalid email list");
   }
-  
+
   let successCount = 0;
   let failedCount = 0;
+
   const cleanEmails = emails.map(e =>
     typeof e === "string" ? e : e.email
   );
 
-
   try {
     const data = await crendential.find();
+
+    if (!data.length) {
+      return res.status(400).send("No email credentials found");
+    }
 
     const user = data[0].toJSON().userid;
     const pass = data[0].toJSON().passkey;
@@ -57,8 +61,9 @@ app.post("/sentmail", async (req, res) => {
       auth: { user, pass },
     });
 
+    await transporter.verify();
 
-    for (let i = 0; i < emails.length; i++) {
+    for (let i = 0; i < cleanEmails.length; i++) {
       try {
         await transporter.sendMail({
           from: user,
@@ -77,35 +82,47 @@ app.post("/sentmail", async (req, res) => {
     }
 
     let status = "pending";
-    if (successCount === emails.length) status = "completed";
+
+    if (successCount === cleanEmails.length) status = "completed";
     else if (successCount > 0) status = "partial";
     else status = "failed";
 
     const historyEntry = new History({
       message,
       emails: cleanEmails,
-      totalCount: emails.length,
+      totalCount: cleanEmails.length,
       successCount,
       failedCount,
       status,
-      sentAt: new Date() // ✅ FIX
+      sentAt: new Date()
     });
 
     await historyEntry.save();
 
-    res.status(200).send("Email sent successfully");
+    if (successCount > 0) {
+      return res.status(200).json({
+        message: "Email process completed",
+        successCount,
+        failedCount,
+        status
+      });
+    } else {
+      return res.status(500).json({
+        message: "All emails failed",
+        successCount,
+        failedCount,
+        status
+      });
+    }
 
-  }
-  catch (error) {
+  } catch (error) {
     console.error("FULL ERROR:", error);
-    console.error("ERROR MESSAGE:", error.message);
-    console.error("ERROR ERRORS:", error.errors);
 
     if (!res.headersSent) {
-      res.status(500).send("Failed to process emails");
+      return res.status(500).send("Failed to process emails");
     }
   }
-})
+});
 
 app.get("/history", async (req, res) => {
   try {
@@ -118,7 +135,9 @@ app.get("/history", async (req, res) => {
 });
 
  
+const PORT = process.env.PORT || 3000;
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Server is running on port 3000');
+app.listen(PORT,()=>{
+  console.log(`Server is running on port ${PORT}`);
 })
+
