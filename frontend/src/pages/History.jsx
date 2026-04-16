@@ -12,7 +12,7 @@ const History = () => {
     navigate("/Bulkmail")
   }
 
-  axios.get("https://bulkmailer-1-kwps.onrender.com/history")
+  axios.get("https://bulkmailer-jjgy.onrender.com/history")
     .then(res => {
       console.log("history data:", res.data)
       setHistory(res.data)
