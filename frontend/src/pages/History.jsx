@@ -1,25 +1,30 @@
 import React from 'react'
 import '../index.css'
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const History = () => {
 
   const [history, setHistory] = useState([])
   const navigate = useNavigate()
+
   function handleBack() {
     navigate("/Bulkmail")
   }
 
-  axios.get("https://bulkmailer-jjgy.onrender.com/history")
-    .then(res => {
-      console.log("history data:", res.data)
-      setHistory(res.data)
-    })
-    .catch(err => {
-      console.log("error fetching history:", err)
-    })
+  useEffect(() => {
+    axios.get("https://bulkmailer-jjgy.onrender.com/history")
+      .then(res => {
+        console.log("history data:", res.data)
+        setHistory(res.data)
+      })
+      .catch(err => {
+        console.log("error fetching history:", err)
+      })
+  }, [history])
+
+
 
   return (
     <>

@@ -18,67 +18,66 @@ const Bulkmail = () => {
     }
 
     function handleFile(e) {
-        const file = e.target.files[0];
-        console.log("Selected file:", file);
-        if (!file) return console.error("No file selected");
+  const file = e.target.files[0];
+  if (!file) return;
 
-        const reader = new FileReader();  //browser API to read files
+  const reader = new FileReader();
 
-        reader.onload = (evt) => {
-            const data = evt.target.result;
+  reader.onload = (evt) => {
+    const data = evt.target.result;
 
-            const workbook = XLSX.read(data, { type: "binary" });
+    const workbook = XLSX.read(data, { type: "array" });
 
-            const sheetName = workbook.SheetNames[0];
-            const sheet = workbook.Sheets[sheetName];
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-            const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-            // Extract emails from first column, skip header if present
-            const emailList = jsonData.slice(1).map(row => row[0]).filter(email => email);
-            setEmails(emailList);
-            console.log("Extracted emails:", emailList);
-        };
+    const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-        reader.readAsBinaryString(file);
-    }
+    const emailList = jsonData
+      .slice(1)
+      .map(row => row[0])
+      .filter(email => /\S+@\S+\.\S+/.test(email));
+
+    setEmails(emailList);
+  };
+
+  reader.readAsArrayBuffer(file);
+}
 
     function clickHistory() {
         navigate("/history")
     }
 
 
-    function handleSubmit() {
-        setStatus(true)
+    async function handleSubmit() {
+        setStatus(true);
+
         if (!emails.length) {
-            setStatus(false)
+            setStatus(false);
             return alert("Make sure to upload a file with email addresses");
         }
 
+        try {
+            const res = await axios.post("https://bulkmailer-jjgy.onrender.com/sentmail",
+                {
+                    message: msg,
+                    emails: emails,
+                }
+            );
 
-        axios.post("https://bulkmailer-jjgy.onrender.com/sentmail",
-            {
-                message: msg,
-                emails: emails,
-            })
+            console.log(res.data);
+            setMsg("");
+            alert("Mail sent");
 
-            .then(res => {
-                console.log(res.data)
-                console.log("message sent:", msg);
-                setMsg("")
-                alert("mail sent")
-                setStatus(false)
-            })
+        } catch (err) {
+            console.log(err);
+            alert("Failed to send mail");
 
-            .catch(err => {
-                console.log(err)
-                alert(err)
-            })
-
-            .finally(() => {
-                setStatus(false)
-            })
-
+        } finally {
+            setStatus(false);
+        }
     }
+
+
     return (
         <>
             <header className='bg-blue-600 flex justify-between items-center px-4 w-full text-left py-4 text-white border-b-3 border-white drop-shadow-xl/20'>
