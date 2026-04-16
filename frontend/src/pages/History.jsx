@@ -22,7 +22,7 @@ const History = () => {
       .catch(err => {
         console.log("error fetching history:", err)
       })
-  }, [history])
+  }, [])
 
 
 
