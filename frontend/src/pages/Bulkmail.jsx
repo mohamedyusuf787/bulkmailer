@@ -63,7 +63,6 @@ const Bulkmail = () => {
                     emails: emails,
                 }
             );
-
             console.log(res.data);
             setMsg("");
             alert("Mail sent");

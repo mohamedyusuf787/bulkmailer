@@ -115,13 +115,16 @@ app.post("/sentmail", async (req, res) => {
       });
     }
 
-  } catch (error) {
-    console.error("FULL ERROR:", error);
+  } 
+  catch (error) {
+  console.error("FULL ERROR:", error);
+  console.error("MESSAGE:", error.message);
+  console.error("STACK:", error.stack);
 
-    if (!res.headersSent) {
-      return res.status(500).send("Failed to process emails");
-    }
-  }
+  return res.status(500).json({
+    message: error.message
+  });
+}
 });
 
 app.get("/history", async (req, res) => {
