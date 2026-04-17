@@ -124,7 +124,7 @@ Phone: 6385417513`,
     else status = "failed";
 
     const historyEntry = new History({
-      message,
+      message : message || "job application mail",
       emails: cleanEmails,
       totalCount: cleanEmails.length,
       successCount,
