@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
+
+
 body {
+  position:relative;
   width: 100%;
-  height: 100vh;
+  height: full;
+  padding-bottom: 200px;
 }
 
 button {
