@@ -2,9 +2,9 @@ import React from 'react'
 import image from "/email-bg.jpg"
 import '../index.css'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import * as XLSX from 'xlsx'
-import { useNavigate } from 'react-router-dom'
 
 const Bulkmail = () => {
 

@@ -2,7 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
+const { pathToRegexp } = require('path-to-regexp');
 require("dotenv").config();
+const path = require("path");
 
 const app = express();
 app.use(cors());
@@ -32,6 +34,7 @@ const History = mongoose.model("History", historySchema, "history");
 
 const crendential = mongoose.model("crendential", {}, "bulkmail")
 
+const attachment = path.join(__dirname, "assets", "Mohamed_Yusuf_React_Developer.pdf")
 app.post("/sentmail", async (req, res) => {
   const { message, emails } = req.body;
 
@@ -71,8 +74,38 @@ app.post("/sentmail", async (req, res) => {
         await transporter.sendMail({
           from: user,
           to: cleanEmails[i],
-          subject: "first mail from yusuf",
-          text: message,
+          subject: "Application for MERN Stack Developer - Mohamed Yusuf",
+          text: `Subject: Application for React / MERN Stack Developer Role – Mohamed Yusuf | Fresher
+
+Dear Hiring Manager,
+
+I am writing to express my interest in the React / MERN Stack / Frontend Developer position at your organization. I am a fresher with hands-on experience in building full-stack web applications using React.js, Node.js, Express.js, and MongoDB.
+
+I recently developed NovCart, a full-featured e-commerce platform built with React + Redux, Node + Express, MongoDB, and Firebase Authentication — covering product listing, search, cart, checkout, and user authentication. I also built CivicPulse, a civic complaint reporting platform (MERN + Tailwind + Redux Toolkit + Cloudinary + Recharts) currently live at civic-pulse-seven.vercel.app.
+
+Key skills I bring:
+• Frontend: React.js, Redux Toolkit, Tailwind CSS, HTML5, CSS3
+• Backend: Node.js, Express.js, REST APIs
+• Database: MongoDB, Mongoose
+• Auth: Firebase Authentication, JWT
+• Tools: Git, Postman, Vercel, Render
+
+I am a quick learner, passionate about writing clean and scalable code, and eager to contribute to a product-focused engineering team. I have attached my resume for your review and would welcome the opportunity to discuss how I can add value to your team.
+
+Thank you for your time and consideration.
+
+Warm regards,
+Mohamed Yusuf
+MERN Stack Developer | Chennai
+Portfolio: https://yusuf-blog-portfolio.vercel.app/
+LinkedIn: https://www.linkedin.com/in/mohamed-yusuf-85702521b/
+Phone: 6385417513`,
+          attachments: [
+            {
+              filename: "Mohamed_Yusuf_React_Developer.pdf",
+              path: attachment
+            }
+          ]
         });
 
         successCount++;
