@@ -103,7 +103,7 @@ Phone: 6385417513`,
           attachments: [
             {
               filename: "Mohamed_Yusuf_React_Developer.pdf",
-              path: attachment
+              path: "https://drive.google.com/uc?export=download&id=1bSn9k2rEOrCZvIQIYLYB4jh2CThBhh6D"
             }
           ]
         });
@@ -180,3 +180,4 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 })
 
+ 
